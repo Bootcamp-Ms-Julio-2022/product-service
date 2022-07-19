@@ -23,24 +23,20 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Flux<Product> findAllByProductCategory(ProductCategory productCategory) {
-        return productRepository.findAllByProductCategory(productCategory);
-    }
-
-    @Override
-    public Mono<Product> findById(String id) {
-        return productRepository.findById(id);
+    public Mono<Product> findProductByCategory(String productCategory) {
+        return productRepository.findProductByProductCategory(productCategory);
     }
 
     @Override
     public Mono<Product> save(Product product) {
         product.setCreatedAt(new Date());
+        product.setState("enabled");
         return productRepository.save(product);
     }
 
     @Override
-    public Mono<Product> update(String id, Product product) {
-        return productRepository.findById(id)
+    public Mono<Product> update(Product product) {
+        return productRepository.findById(product.getId())
                 .flatMap(p -> {
                     p.setProductType(product.getProductType());
                     p.setProductCategory(product.getProductCategory());
